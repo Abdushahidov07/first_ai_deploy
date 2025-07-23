@@ -29,4 +29,4 @@ with col2:
 
 X=df.drop(['species'], axis=1)
 y=df['species']
-X_trin, X_test, y_train, y_test = train_test_split(X, y, test_sixe=0.3, random_state=42)
+X_trin, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
