@@ -61,22 +61,24 @@ bill_depth=st.sidebar.slider("Глубина клюва(мм)", float(df['bill_d
 flipper_length=st.sidebar.slider("Длина крыла(мм)", float(df['flipper_length_mm'].min()),float(df['flipper_length_mm'].max()),float(df['flipper_length_mm'].mean()))
 body_mass=st.sidebar.slider("Масса тела (г)", float(df['body_mass_g'].min()),float(df['body_mass_g'].max()),float(df['body_mass_g'].mean()))
 
-user_input=pd.DataFrame([{
-  'island':island_input,
-  "sex":sex_input,
-  "bill_length_mm":bill_length,
-  "bill_depth_mm":bill_depth,
-  "flipper_length_mm":flipper_length,
-  "body_mass_g":body_mass
+user_input = pd.DataFrame([{
+    'island': island_input,
+    "sex": sex_input,
+    "bill_length_mm": bill_length,
+    "bill_depth_mm": bill_depth,
+    "flipper_length_mm": flipper_length,
+    "body_mass_g": body_mass
 }])
 
 user_encoded = encoder.transform(user_input)
-for col in ["bill_length_mm","bill_depth_mm","flipper_length_mm","body_mass_g"]:
-  user_encoded[col]=user_input[col].values
-  
-user_encoded=user_encoded[X_train_encoded.colums]
+
+for col in ["bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"]:
+    user_encoded[col] = user_input[col].values
+
+user_encoded = user_encoded[X_train_encoded.columns]  # исправлено .colums → .columns
 
 st.sidebar.subheader("📈 Результаты предсказания")
+
 for name, model in models.items():
     pred = model.predict(user_encoded)[0]
     proba = model.predict_proba(user_encoded)[0]
