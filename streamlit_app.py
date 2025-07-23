@@ -30,3 +30,31 @@ with col2:
 X=df.drop(['species'], axis=1)
 y=df['species']
 X_trin, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+encoder = ce.TargetEncoder(cols=['island', 'sex'])
+X_train_encoded = encoder.fit_transform(X_train, y_train)
+X_test_encoded = encoder.transform(X_test)
+
+models={
+  "Decision Tree":DecisionTreeClassifier(random_state=42),
+  "KNN":KNeighborsClassifier()  
+}
+
+for name, model in models.items():
+  model.fit(X_train_encoded, y_train)
+  acc_train = accuracy_score(y_train, model.predict(X_train_encoded))
+  acc_test = accuracy_score(y_test, model.predict(X_train_encoded))                            
+  results.append({
+    "Model": name,
+    "Train Acc": round(acc_train, 2)
+    "Test Acc": round(acc_test, 2)
+  })
+
+st.write("### Сравнение моделей по точности ")
+st.table(pd.DataFrame(results))    
+
+
+
+
+      
+
