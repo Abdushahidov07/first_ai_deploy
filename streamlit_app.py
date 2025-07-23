@@ -43,7 +43,7 @@ models={
 for name, model in models.items():
   model.fit(X_train_encoded, y_train)
   acc_train = accuracy_score(y_train, model.predict(X_train_encoded))
-  acc_test = accuracy_score(y_test, model.predict(X_train_encoded))                            
+  acc_test = accuracy_score(y_test, model.predict(X_test_encoded))                            
   results.append({
     "Model": name,
     "Train Acc": round(acc_train, 2),
