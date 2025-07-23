@@ -53,8 +53,36 @@ for name, model in models.items():
 st.write("### Сравнение моделей по точности ")
 st.table(pd.DataFrame(results))    
 
+st.sidebar.header("Предсказание по параметрам")
+island_input=st.sidebar.selectbox("Остров", df['island'].unique())
+sex_input=st.sidebar.selectbox("пол", df['sex'].unique())
+bill_length=st.sidebar.slider("Длина клюва(мм)", float(df['bill_length_mm'].min()),float(df['bill_length_mm'].max()),float(df['bill_length_mm'].mean()))
+bill_depth=st.sidebar.slider("Глубина клюва(мм)", float(df['C'].min()),float('bill_depth_mm'].max()),float('bill_depth_mm'].mean()))
+flipper_length=st.sidebar.slider("Длина крыла(мм)", float(df['flipper_length_mm'].min()),float('flipper_length_mm'].max()),float('flipper_length_mm'].mean()))
+body_mass=st.sidebar.slider("Масса тела (г)", float(df['body_mass_g'].min()),float('body_mass_g'].max()),float('body_mass_g'].mean()))
 
+user_input=pd.DataFrame([{
+  'island':island_input,
+  "sex":sex_input,
+  "bill_length_mm":bill_length,
+  "bill_depth_mm":bill_depth,
+  "flipper_length_mm":flipper_length,
+  "body_mass_g":body_mass
+}])
 
+user_endcoded = endcoder.transform(user_input)
+for col in ["bill_length_mm","bill_depth_mm","flipper_length_mm","body_mass_g"]:
+  user_encoded[col]=user_input[col].velues
+  
+user_encoded=user_encoded[X_train_encoded.colums]
+
+st.sidebar.subheader("📈 Результаты предсказания")
+for name, model in models.items():
+    pred = model.predict(user_encoded)[0]
+    proba = model.predict_proba(user_encoded)[0]
+    st.sidebar.markdown(f"**{name}: {pred}**")
+    proba_df = pd.DataFrame({'Вид': model.classes_, 'Вероятность': proba})
+    st.sidebar.dataframe(proba_df.set_index("Вид"), use_container_width=True)
 
       
 
